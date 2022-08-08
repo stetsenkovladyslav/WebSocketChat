@@ -9,5 +9,5 @@ public interface MessageService {
 
     MessageEntity save(MessageDto messageDto);
 
-    List<MessageEntity> findLatestMessages(Integer countOfMessages);
+    List<MessageDto> findLatestMessages(Integer countOfMessages);
 }

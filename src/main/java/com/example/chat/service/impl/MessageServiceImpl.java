@@ -8,10 +8,11 @@ import com.example.chat.repository.MessageRepository;
 import com.example.chat.service.MessageService;
 import com.example.chat.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
+import lombok.var;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +28,12 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<MessageEntity> findLatestMessages(Integer countOfMessages) {
-        return messageRepository.findAllByOrderByIdDesc(PageRequest.of(0, countOfMessages));
+    public List<MessageDto> findLatestMessages(Integer countOfMessages) {
+        var messages = messageRepository.findAll(countOfMessages);
+        List<MessageDto> chatHistory = messages
+                .stream()
+                .map(MessageMapper::toMessageDto)
+                .collect(Collectors.toList());
+        return chatHistory;
     }
 }
